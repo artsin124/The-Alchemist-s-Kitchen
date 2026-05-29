@@ -1,8 +1,8 @@
-# 🏛️ The Alchemist’s Archive
+# 🏛️ The Alchemist’s Kitchen
 
 > *“A digital simulation of forbidden, culinary luxury.”*
 
-The Alchemist’s Archive is an immersive, highly cinematic e-commerce storefront designed to treat gourmet chocolate bars like rare, mystical artifacts. Merging a dramatic **dark academia aesthetic** with cutting-edge **scroll-driven 3D animations**, this digital archive transforms a standard online shopping experience into an evocative visual narrative.
+The Alchemist’s Kitchen is an immersive, highly cinematic e-commerce storefront designed to treat gourmet chocolate bars like rare, mystical artifacts. Merging a dramatic **dark academia aesthetic** with cutting-edge **scroll-driven 3D animations**, this digital archive transforms a standard online shopping experience into an evocative visual narrative.
 
 ---
 

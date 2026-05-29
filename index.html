@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Alchemist's Kitchen | Luxury Artistry Cacao</title>
+  <meta name="description" content="Cinematic landing page for luxury, gold-foiled dark cacao synthesized with rare botanical infusions. Explore dark academia alchemy.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Custom Volumetric & Shadows Background Overlay -->
+  <div class="candlelight-overlay left-candle"></div>
+  <div class="candlelight-overlay right-candle"></div>
+  <div class="vignette-overlay"></div>
+  <canvas id="smoke-canvas"></canvas>
+
+  <!-- Three.js Canvas Container -->
+  <div id="webgl-container">
+    <canvas id="webgl-canvas"></canvas>
+  </div>
+
+  <!-- Custom Cursor / Aura Glow for Interactive Elements -->
+  <div class="custom-cursor"></div>
+  <div class="tasting-tag-anchor" id="tasting-tag">
+    <div class="tag-string"></div>
+    <div class="tag-body">
+      <span class="tag-number" id="tag-num">Formula VIII / Fragment 04</span>
+      <h3 class="tag-title" id="tag-title">Ambergris Salt</h3>
+      <p class="tag-notes" id="tag-notes">Warm, sea-battered ambergris harvested in the dark of night, crystalline smoke, rich mineral density.</p>
+      <div class="tag-signature">The Alchemist</div>
+    </div>
+  </div>
+
+  <!-- Header Section -->
+  <header>
+    <div class="header-logo" id="main-logo">
+      <span class="alchemist-insignia">🜞</span> THE ALCHEMIST'S KITCHEN
+    </div>
+    
+    <div class="header-actions">
+      <!-- Ambient Audio Toggle -->
+      <button class="audio-btn" id="audio-toggle" aria-label="Toggle ambient soundtrack">
+        <span class="audio-icon">🎚</span> <span class="audio-text">Chamber Ambient</span>
+      </button>
+
+      <!-- Cart Icon -->
+      <button class="cart-btn" id="cart-toggle" aria-label="Open purchase ledger">
+        <span class="cart-icon">🜛</span>
+        <span class="cart-count" id="cart-count">0</span>
+      </button>
+
+      <!-- Journal Menu Toggle -->
+      <button class="menu-btn" id="menu-toggle" aria-label="Open journal index">
+        <span class="menu-label">Index</span>
+        <div class="journal-seal">🜚</div>
+      </button>
+    </div>
+  </header>
+
+  <!-- Antique Leather-Bound Journal Index Sidebar Drawer -->
+  <aside class="journal-sidebar" id="journal-sidebar">
+    <div class="leather-overlay"></div>
+    <div class="journal-wrapper">
+      <div class="journal-page left-page">
+        <div class="gilded-border"></div>
+        <div class="journal-content">
+          <div class="journal-heading">
+            <span class="roman-num">MDCCCLXXI</span>
+            <h2>The Philosophy</h2>
+          </div>
+          <p class="philosophy-text">
+            To transmute base cacao into pure culinary gold is not a science, but an arcane art. 
+            We source rare heirloom Criollo beans from high-altitude obsidian soil, fermenting under lunar cycles, and infusing with elements harvested at the seasonal solstices.
+          </p>
+          <p class="philosophy-quote">
+            "Solve et Coagula — Dissolve the raw components, bind them in perfect darkness."
+          </p>
+          <div class="philosophy-signature">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='50' viewBox='0 0 100 50'><path d='M10,40 Q30,10 50,30 T90,20' fill='none' stroke='%23D4AF37' stroke-width='2'/></svg>" alt="Alchemist's Signature">
+          </div>
+        </div>
+      </div>
+      
+      <div class="journal-page right-page">
+        <div class="gilded-border"></div>
+        <button class="close-journal" id="close-journal" aria-label="Close Journal">✕</button>
+        <div class="journal-content">
+          <div class="journal-heading">
+            <span class="roman-num">INDEX ARCHIVAL</span>
+            <h2>Arcane Formulae</h2>
+          </div>
+          <nav class="journal-nav">
+            <ul>
+              <li><a href="#hero-section" class="journal-link" data-index="0"><span>I.</span> Synthesis Chamber</a></li>
+              <li><a href="#unfolding-section" class="journal-link" data-index="1"><span>II.</span> Parchment Revelation</a></li>
+              <li><a href="#fragment-section" class="journal-link" data-index="2"><span>III.</span> Crystalline Fragments</a></li>
+              <li><a href="#catalog-section" class="journal-link" data-index="3"><span>IV.</span> The Catalog Ledger</a></li>
+            </ul>
+          </nav>
+          
+          <div class="journal-footer-decor">
+            <span>🜁</span> <span>🜂</span> <span>🜃</span> <span>🜄</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Purchase Ledger / Cart Sidebar -->
+  <aside class="cart-ledger" id="cart-ledger">
+    <div class="ledger-paper">
+      <div class="ledger-header">
+        <h2>Purchase Ledger</h2>
+        <button class="close-ledger" id="close-ledger">✕</button>
+      </div>
+      <div class="ledger-line"></div>
+      
+      <div class="ledger-items" id="ledger-items">
+        <p class="empty-ledger-msg">No active syntheses recorded in ledger.</p>
+      </div>
+
+      <div class="ledger-totals">
+        <div class="ledger-line"></div>
+        <div class="total-row">
+          <span>Subtotal synthesis:</span>
+          <span class="ledger-price" id="ledger-subtotal">$0.00</span>
+        </div>
+        <div class="total-row tax-row">
+          <span>Lunar excise levy:</span>
+          <span class="ledger-price" id="ledger-tax">$0.00</span>
+        </div>
+        <div class="ledger-line double-line"></div>
+        <div class="total-row grand-total">
+          <span>Final Transmutation:</span>
+          <span class="ledger-price" id="ledger-total">$0.00</span>
+        </div>
+        
+        <button class="transmute-checkout-btn" id="transmute-btn" disabled>
+          Initiate Transmutation Checkout
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Simulated checkout complete modal -->
+  <div class="modal-overlay" id="checkout-modal">
+    <div class="modal-content">
+      <div class="gilded-border"></div>
+      <span class="modal-insignia">🜚</span>
+      <h2>Synthesis Initiated</h2>
+      <p>The alchemist has recorded your transaction in the permanent registry. Your gold-wrapped chocolate bars are being packed into mahogany crates under candlewax seals.</p>
+      <button class="close-modal" id="close-modal-btn">Return to Chamber</button>
+    </div>
+  </div>
+
+  <!-- Ambient Audio Source (Atmospheric rain + fire crackling loop) -->
+  <audio id="ambient-audio" loop>
+    <source src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" type="audio/wav">
+  </audio>
+
+  <!-- Scroll-Driven Dom Sections -->
+  <main class="scroll-container">
+    
+    <!-- SECTION 1: HERO / THE CHAMBER -->
+    <section class="scroll-section" id="hero-section">
+      <div class="section-content text-center">
+        <div class="faint-gold-tag">FORMULA NO. VIII</div>
+        <h1 class="cinematic-title">Obsidian Dark Cacao</h1>
+        <p class="cinematic-subtitle">A hyper-luxurious dark chocolate bar, preserved inside gold-foiled aged parchment and sealed with pure crimson candlewax. Scroll to reveal the alchemical ingredients within.</p>
+        <div class="scroll-down-prompt">
+          <span>SCROLL TO UNLOCK</span>
+          <div class="prompt-arrow">↓</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: THE REVELATION -->
+    <section class="scroll-section" id="unfolding-section">
+      <div class="section-content left-align">
+        <div class="scroll-card">
+          <span class="card-num">01 / REVELATION</span>
+          <h2>The Parchment Unravels</h2>
+          <p>As the crimson wax seal cracks, the textured gold-foiled aged parchment wrapper peels back in 3D space. The chocolate bar is exposed to the dramatic candlelit glow of the chamber, revealing a dense grid of pure, pristine obsidian chocolate blocks.</p>
+          <div class="alchemical-symbols">🜛 🜔 🜏</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: THE SHATTERING -->
+    <section class="scroll-section" id="fragment-section">
+      <div class="section-content right-align">
+        <div class="scroll-card">
+          <span class="card-num">02 / SHATTER</span>
+          <h2>Crystalline Fragmentation</h2>
+          <p>Under tension, the solid obsidian bar shatters dynamically into floating geometric shards, parallaxing directly towards the camera. Move your cursor over these floating fragments to inspect their taste nodes and hidden botanicals.</p>
+          <div class="alchemical-symbols">🜞 🝔 🜚</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: THE CATALOG LEDGER (E-COMMERCE CATALOG) -->
+    <section class="scroll-section" id="catalog-section">
+      <div class="catalog-container">
+        <div class="catalog-header">
+          <span class="faint-gold-tag">AVAILABLE TRANSMUTATIONS</span>
+          <h2>The Chocolate Compendium</h2>
+          <p>Acquire one of our curated alchemical cacao formulations. Each is hand-crafted and sealed in custom velvet cases.</p>
+        </div>
+        
+        <div class="product-grid">
+          <!-- CARD 1 -->
+          <div class="product-card">
+            <div class="card-background-glow"></div>
+            <div class="product-image-container">
+              <span class="product-label-badge">Formula No. VIII</span>
+              <div class="product-svg-placeholder obsidian-cacao-svg">
+                <!-- Golden lines representing obsidian cacao alchemical drawing -->
+                <svg viewBox="0 0 200 200" width="100%" height="100%">
+                  <circle cx="100" cy="100" r="70" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-dasharray="3, 3"/>
+                  <rect x="50" y="50" width="100" height="100" fill="none" stroke="#D4AF37" stroke-width="1" transform="rotate(45 100 100)"/>
+                  <circle cx="100" cy="100" r="10" fill="#D4AF37"/>
+                  <path d="M100,10 L100,190 M10,100 L190,100" stroke="#D4AF37" stroke-width="0.5" opacity="0.6"/>
+                </svg>
+              </div>
+            </div>
+            <div class="product-info">
+              <h3>Obsidian Cacao & Smoked Ambergris</h3>
+              <p class="product-desc">A deep, high-contrast cacao profile featuring rare night-harvested marine ambergris salt and crushed dried orris root.</p>
+              <div class="product-details">
+                <span class="detail-note">82% Criollo Cacao</span>
+                <span class="detail-note">Salty & Volcanic</span>
+              </div>
+              <div class="product-purchase">
+                <span class="price">$28.00</span>
+                <button class="add-to-ledger-btn" data-id="form-8" data-name="Formula VIII: Obsidian Cacao" data-price="28.00">Add to Ledger</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD 2 -->
+          <div class="product-card">
+            <div class="card-background-glow"></div>
+            <div class="product-image-container">
+              <span class="product-label-badge">Formula No. XII</span>
+              <div class="product-svg-placeholder gold-saffron-svg">
+                <svg viewBox="0 0 200 200" width="100%" height="100%">
+                  <circle cx="100" cy="100" r="80" fill="none" stroke="#D4AF37" stroke-width="1"/>
+                  <polygon points="100,20 180,150 20,150" fill="none" stroke="#D4AF37" stroke-width="1.5"/>
+                  <polygon points="100,180 180,50 20,50" fill="none" stroke="#D4AF37" stroke-width="1" opacity="0.7"/>
+                  <circle cx="100" cy="100" r="20" fill="none" stroke="#D4AF37" stroke-width="2"/>
+                </svg>
+              </div>
+            </div>
+            <div class="product-info">
+              <h3>Gold Leaf & Saffron Peppermint</h3>
+              <p class="product-desc">An extremely premium formulation blended with Iranian red saffron threads, crushed organic peppermint, and 24k edible gold flakes.</p>
+              <div class="product-details">
+                <span class="detail-note">74% Trinitario Cacao</span>
+                <span class="detail-note">Spiced & Cool</span>
+              </div>
+              <div class="product-purchase">
+                <span class="price">$34.00</span>
+                <button class="add-to-ledger-btn" data-id="form-12" data-name="Formula XII: Gold & Saffron" data-price="34.00">Add to Ledger</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD 3 -->
+          <div class="product-card">
+            <div class="card-background-glow"></div>
+            <div class="product-image-container">
+              <span class="product-label-badge">Formula No. XV</span>
+              <div class="product-svg-placeholder lavender-violet-svg">
+                <svg viewBox="0 0 200 200" width="100%" height="100%">
+                  <circle cx="100" cy="100" r="70" fill="none" stroke="#D4AF37" stroke-width="1"/>
+                  <path d="M50,100 A50,50 0 0,1 150,100 A50,50 0 0,1 50,100" fill="none" stroke="#D4AF37" stroke-width="1.5" transform="rotate(30 100 100)"/>
+                  <path d="M50,100 A50,50 0 0,1 150,100 A50,50 0 0,1 50,100" fill="none" stroke="#D4AF37" stroke-width="1.5" transform="rotate(120 100 100)"/>
+                  <circle cx="100" cy="100" r="5" fill="#D4AF37"/>
+                </svg>
+              </div>
+            </div>
+            <div class="product-info">
+              <h3>Violet Petal & Lavender Mist</h3>
+              <p class="product-desc">A delicate dark milk hybrid chocolate infused with fresh lavender hydrosol, finished with candied wild violet petals and chamomile pollen.</p>
+              <div class="product-details">
+                <span class="detail-note">65% Dark Milk Cacao</span>
+                <span class="detail-note">Floral & Creamy</span>
+              </div>
+              <div class="product-purchase">
+                <span class="price">$26.00</span>
+                <button class="add-to-ledger-btn" data-id="form-xv" data-name="Formula XV: Violet & Lavender" data-price="26.00">Add to Ledger</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Three.js + GSAP Libraries CDNs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  
+  <!-- Custom Logic JS -->
+  <script src="app.js"></script>
+</body>
+</html>
